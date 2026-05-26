@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Outfit", "Space Grotesk", sans-serif;
+  
+  --color-primary-glow: rgba(185, 28, 28, 0.12);
+  --color-dark-surface: #0a0505;
+  --color-card-surface: #120909;
+  
+  --color-red-650: #cf1b1b;
+  --color-red-655: #be1212;
+  
+  /* Bind custom zinc classes to high-contrast colors to ensure legibility */
+  --color-zinc-250: #e4e4e7;
+  --color-zinc-450: #a1a1aa;
+  --color-zinc-605: #4b5563;
+  --color-zinc-650: #4b5563;
+  --color-zinc-750: #3f3f46;
+  --color-zinc-805: #27272a;
+  --color-zinc-955: #09090b;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: #0a0606;
+  color: #f7eded;
+  overflow-x: hidden;
+}
+
+/* --- DEEP INK DARK THEME GLOBAL OVERRIDES --- */
+
+/* Neutralize and darken generic light background classes */
+.bg-\[\#FAF9F6\], 
+section.bg-\[\#FAF9F6\],
+div.bg-\[\#FAF9F6\] {
+  background-color: #0a0606 !important;
+}
+
+.bg-white,
+section.bg-white,
+div.bg-white {
+  background-color: #120c0c !important;
+}
+
+.bg-zinc-50 {
+  background-color: #171010 !important;
+}
+
+.bg-zinc-100 {
+  background-color: #211818 !important;
+}
+
+.bg-red-50 {
+  background-color: rgba(185, 28, 28, 0.15) !important;
+}
+
+.bg-red-50\/35 {
+  background-color: rgba(185, 28, 28, 0.08) !important;
+}
+
+/* Brighten and refine text readability on dark substrates */
+.text-zinc-950,
+.text-zinc-900,
+.text-zinc-850,
+.text-zinc-805,
+.text-zinc-800,
+.text-zinc-750 {
+  color: #fdfcfc !important;
+}
+
+.text-zinc-700,
+.text-zinc-650,
+.text-zinc-605,
+.text-zinc-600,
+.text-zinc-550 {
+  color: #dad2d2 !important;
+}
+
+.text-zinc-450,
+.text-zinc-400 {
+  color: #a89f9f !important;
+}
+
+/* Custom dark borders */
+.border-zinc-200,
+.border-zinc-200\/80,
+.border-zinc-200\/55,
+.border-zinc-200\/50,
+.border-zinc-250,
+.border-zinc-250\/80,
+.border-zinc-250\/90,
+.border-zinc-300 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Calibration mark and lines */
+.border-red-200, .border-red-100 {
+  border-color: rgba(239, 68, 68, 0.25) !important;
+}
+
+/* Style all forms and digital input panels for Dark UI */
+input, 
+select, 
+textarea {
+  background-color: #171010 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+input:focus, 
+select:focus, 
+textarea:focus {
+  border-color: #ef4444 !important;
+  outline: none !important;
+}
+
+input::placeholder, 
+textarea::placeholder {
+  color: #796e6e !important;
+}
+
+/* Force crystal-clear high-contrast selection colors across the site */
+::selection {
+  background-color: #dc2626 !important; /* Tailwind red-600 */
+  color: #ffffff !important;
+}
+
+::-moz-selection {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+/* Beautiful printing-press colored background blobs - custom glowing dark style */
+.color-blob-cyan {
+  background: radial-gradient(circle at center, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+}
+
+.color-blob-magenta {
+  background: radial-gradient(circle at center, rgba(236, 72, 153, 0.11) 0%, transparent 75%);
+}
+
+.color-blob-yellow {
+  background: radial-gradient(circle at center, rgba(234, 179, 8, 0.08) 0%, transparent 60%);
+}
+
+/* Geometric Balance helper classes */
+.geom-grid-border {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.geom-grid-border-light {
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.geom-gradient-red {
+  background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+}
+
+.geom-radial-glow {
+  background: radial-gradient(circle at center, rgba(185, 28, 28, 0.1) 0%, transparent 70%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b91c1c;
+}
+
+
