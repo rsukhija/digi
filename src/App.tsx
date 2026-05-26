@@ -10,7 +10,6 @@ import AboutUs from "./components/AboutUs";
 import ProductColumnsShowcase from "./components/ProductColumnsShowcase";
 import PromotionalGiftsCarousel from "./components/PromotionalGiftsCarousel";
 import BusinessCardMockup from "./components/BusinessCardMockup";
-import AiPlanner from "./components/AiPlanner";
 import InteractiveGallery from "./components/InteractiveGallery";
 import WhyChooseUs from "./components/WhyChooseUs";
 import CustomerReviews from "./components/CustomerReviews";
@@ -61,13 +60,7 @@ export default function App() {
       <BusinessCardMockup />
 
       {/* 5.7 Comprehensive Interactive Services Catalog */}
-      <OurServices onSelectProduct={handleSelectService} />
-
-      {/* 6. AI Printing Media Planner spec assembler */}
-      <AiPlanner
-        preselectedService={preselectedService}
-        onClearPreselect={() => setPreselectedService("")}
-      />
+      <OurServices />
 
       {/* 7. Product Work Gallery */}
       <InteractiveGallery />

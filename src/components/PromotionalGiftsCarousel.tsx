@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowLeft, ArrowRight, Heart, Gift, BookOpen, PenTool, CheckCircle2, MessageSquare, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Heart, Gift, BookOpen, PenTool, MessageSquare, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { GENERAL_INFO } from "../data";
 
@@ -45,7 +45,7 @@ export default function PromotionalGiftsCarousel() {
       id: "gift_diary",
       title: "Premium Bound Corporate Diaries",
       subtitle: "Custom Stamped Planners & Notebooks",
-      desc: "Outstanding vegan leather-bound journals with thermal deep blind debossing or shiny metallic foil stamps of company logs. Keep your brand on client desks all year long.",
+      desc: "Outstanding vegan leather-bound journals with thermal debossing or shiny metallic foil stamps of company logs. Keep your brand on client desks all year long.",
       techSpecs: "80 GSM imported natural shade paper • Gold/Silver corner protectors option",
       imageUrl: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=700&q=80",
       badge: "Executive Quality",
@@ -81,26 +81,27 @@ export default function PromotionalGiftsCarousel() {
   };
 
   return (
-    <section id="custom-gifts" className="py-24 bg-[#FAF9F6] border-b border-zinc-200 relative overflow-hidden">
+    <section id="custom-gifts" className="py-24 bg-[#040101] border-b border-zinc-950 relative overflow-hidden text-white">
       {/* Absolute decorative red dot glow */}
-      <div className="absolute top-1/2 left-0 w-[300px] h-[300px] bg-red-600/5 rounded-full glow-blur pointer-events-none -translate-y-1/2" />
+      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-red-650/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
+      <div className="absolute top-1/3 right-0 w-[300px] h-[300px] bg-blue-600/5 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 font-sans">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="flex items-center justify-center space-x-2">
-            <span className="h-px w-6 bg-red-600" />
-            <span className="text-xs font-mono uppercase tracking-[0.25em] text-red-600 font-bold">
+            <span className="h-px w-6 bg-red-500" />
+            <span className="text-xs font-mono uppercase tracking-[0.25em] text-red-500 font-bold">
               PROMOTIONAL & CORPORATE MERCHANDISING
             </span>
-            <span className="h-px w-6 bg-red-600" />
+            <span className="h-px w-6 bg-red-500" />
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-zinc-950 leading-none">
-            Custom <span className="text-red-500">Corporate & Gift</span> Printing
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-white leading-none">
+            Custom <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-blue-500">Corporate & Gift</span> Printing
           </h2>
-          <p className="text-xs text-zinc-650 max-w-xl mx-auto leading-relaxed font-light">
-            Turn left or right to explore high-definition customized gifting items. Embellish promotional materials with corporate logo placement or customized design structures.
+          <p className="text-xs text-zinc-400 max-w-xl mx-auto leading-relaxed font-light">
+            Explore high-definition customized gifting items. Embellish promotional materials with corporate logo placement or customized design structures.
           </p>
         </div>
 
@@ -108,13 +109,13 @@ export default function PromotionalGiftsCarousel() {
         <div className="relative max-w-5xl mx-auto">
           
           {/* Main Slide Card Row */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white border border-zinc-250/80 p-6 sm:p-12 relative shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-zinc-900 border border-zinc-800 p-6 sm:p-12 relative shadow-md">
             
             {/* Visual Red Tag Marker */}
-            <div className="absolute top-0 left-0 w-3 h-3 bg-red-600" />
+            <div className="absolute top-0 left-0 w-3 h-3 bg-red-605 bg-red-600" />
             
             {/* Left Column: Sliding Product Photo Representation */}
-            <div className="md:col-span-5 relative aspect-square overflow-hidden border border-zinc-200 group bg-[#FAF9F6] shadow-sm">
+            <div className="md:col-span-5 relative aspect-square overflow-hidden border border-zinc-800 group bg-zinc-950 shadow-inner">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
@@ -128,15 +129,15 @@ export default function PromotionalGiftsCarousel() {
                     src={GIFT_PRODUCTS[currentIndex].imageUrl}
                     alt={GIFT_PRODUCTS[currentIndex].title}
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
+                    className="w-full h-full object-cover transition-transform duration-550 group-hover:scale-105"
                   />
                   {/* Subtle vignette on image */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                 </motion.div>
               </AnimatePresence>
               
               {/* Top Banner Tag */}
-              <span className="absolute top-3 left-3 text-[9px] font-mono font-bold uppercase tracking-widest bg-red-600 text-white px-2.5 py-1 z-10">
+              <span className="absolute top-3 left-3 text-[9px] font-mono font-bold uppercase tracking-widest bg-red-600 text-white px-2.5 py-1 z-10 shadow-[0_0_10px_rgba(220,38,38,0.25)]">
                 {GIFT_PRODUCTS[currentIndex].badge}
               </span>
             </div>
@@ -155,42 +156,42 @@ export default function PromotionalGiftsCarousel() {
                 >
                   {/* Dynamic Category Index indicator */}
                   <div className="flex items-center space-x-2">
-                    <span className="p-1 px-2.5 bg-[#FAF9F6] border border-zinc-200 text-[9px] font-mono text-zinc-600 uppercase font-bold tracking-widest rounded-none">
+                    <span className="p-1 px-2.5 bg-zinc-950 border border-zinc-800 text-[9px] font-mono text-zinc-400 uppercase font-black tracking-widest rounded-none">
                       PRODUCT SPECIAL {currentIndex + 1} OF {GIFT_PRODUCTS.length}
                     </span>
-                    <span className="h-px w-8 bg-zinc-200" />
-                    <span className="flex items-center space-x-1 text-red-650">
+                    <span className="h-px w-8 bg-zinc-800" />
+                    <span className="flex items-center space-x-1">
                       {GIFT_PRODUCTS[currentIndex].icon}
                     </span>
                   </div>
 
                   {/* Main Title Specifications */}
                   <div>
-                    <h3 className="font-display font-black text-zinc-950 text-xl sm:text-2xl uppercase tracking-tight">
+                    <h3 className="font-display font-black text-white text-xl sm:text-2xl uppercase tracking-tight">
                       {GIFT_PRODUCTS[currentIndex].title}
                     </h3>
-                    <p className="text-[10px] font-mono text-red-600 uppercase tracking-widest font-bold mt-0.5">
+                    <p className="text-[10px] font-mono text-red-500 uppercase tracking-widest font-bold mt-0.5">
                       {GIFT_PRODUCTS[currentIndex].subtitle}
                     </p>
                   </div>
 
                   {/* Text descriptions */}
-                  <p className="text-xs text-zinc-650 leading-relaxed">
+                  <p className="text-xs text-zinc-300 leading-relaxed font-light">
                     {GIFT_PRODUCTS[currentIndex].desc}
                   </p>
 
                   {/* Spec blocks layout */}
-                  <div className="bg-[#FAF9F6] p-4 border border-zinc-200 rounded-none font-sans space-y-2 mt-4">
-                    <div className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest font-bold flex items-center space-x-2 border-b border-zinc-200 pb-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-red-650 animate-pulse" />
+                  <div className="bg-zinc-950 p-4 border border-zinc-850 rounded-none font-sans space-y-2 mt-4">
+                    <div className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest font-bold flex items-center space-x-2 border-b border-zinc-800 pb-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-red-500 animate-pulse" />
                       <span>OFFLINE PLOTTING PRODUCTION DIRECTIVES</span>
                     </div>
-                    <p className="text-xs text-zinc-700">
-                      <span className="font-mono text-[10px] text-red-600 font-bold uppercase mr-1.5">Spec Profile:</span>
+                    <p className="text-xs text-zinc-300">
+                      <span className="font-mono text-[10px] text-red-500 font-bold uppercase mr-1.5">Spec Profile:</span>
                       {GIFT_PRODUCTS[currentIndex].techSpecs}
                     </p>
-                    <p className="text-xs text-zinc-700">
-                      <span className="font-mono text-[10px] text-red-600 font-bold uppercase mr-1.5">Best Uses:</span>
+                    <p className="text-xs text-zinc-300">
+                      <span className="font-mono text-[10px] text-red-500 font-bold uppercase mr-1.5">Best Uses:</span>
                       {GIFT_PRODUCTS[currentIndex].uses}
                     </p>
                   </div>
@@ -199,20 +200,20 @@ export default function PromotionalGiftsCarousel() {
               </AnimatePresence>
 
               {/* Action layout: Navigation arrows + Enquire Trigger button */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-6 border-t border-zinc-200">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-6 border-t border-zinc-800">
                 
                 {/* Navigation arrows */}
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={prevSlide}
-                    className="p-3 bg-white border border-zinc-250 hover:border-red-600 text-zinc-600 hover:text-zinc-950 transition-colors cursor-pointer rounded-none flex items-center justify-center hover:bg-zinc-50"
+                    className="p-3 bg-zinc-950 border border-zinc-850 hover:border-red-650 hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors cursor-pointer rounded-none flex items-center justify-center"
                     aria-label="Previous custom item"
                   >
                     <ArrowLeft className="w-4 h-4" />
                   </button>
                   <button
                     onClick={nextSlide}
-                    className="p-3 bg-white border border-zinc-250 hover:border-red-600 text-zinc-600 hover:text-zinc-950 transition-colors cursor-pointer rounded-none flex items-center justify-center hover:bg-zinc-50"
+                    className="p-3 bg-zinc-950 border border-zinc-850 hover:border-red-650 hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors cursor-pointer rounded-none flex items-center justify-center"
                     aria-label="Next custom item"
                   >
                     <ArrowRight className="w-4 h-4" />
@@ -222,9 +223,9 @@ export default function PromotionalGiftsCarousel() {
                 {/* Instant WhatsApp Inquiry compilation hook */}
                 <button
                   onClick={() => handleWhatsAppEnquire(GIFT_PRODUCTS[currentIndex].title)}
-                  className="py-3 px-6 bg-gradient-to-r from-red-600 to-red-800 hover:shadow-md text-white rounded-none text-xs font-bold uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center space-x-2.5 shadow-sm"
+                  className="py-3.5 px-6 bg-gradient-to-r from-red-600 to-red-800 text-white rounded-none text-xs font-bold uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center space-x-2.5 shadow-[0_0_15px_rgba(220,38,38,0.15)] hover:shadow-none"
                 >
-                  <MessageSquare className="w-4 h-4 fill-white text-red-650" />
+                  <MessageSquare className="w-4 h-4 fill-white text-red-955" />
                   <span>Request WhatsApp Quote Spec</span>
                 </button>
 
@@ -240,8 +241,8 @@ export default function PromotionalGiftsCarousel() {
               <button
                 key={prod.id}
                 onClick={() => setCurrentIndex(idx)}
-                className={`transition-all duration-300 rounded-none h-1.5 cursor-pointer ${
-                  currentIndex === idx ? "bg-red-650 w-10" : "bg-zinc-300 w-2"
+                className={`transition-all duration-300 rounded-none h-1 cursor-pointer ${
+                  currentIndex === idx ? "bg-red-500 w-10" : "bg-zinc-800 w-2"
                 }`}
                 title={`Product ${idx + 1}`}
               />

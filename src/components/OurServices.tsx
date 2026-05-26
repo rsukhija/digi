@@ -5,27 +5,18 @@ import {
 } from "motion/react";
 import { 
   Search, 
-  ArrowRight, 
   MessageSquare, 
   Layers, 
   Clock, 
   Sparkles, 
   Check, 
   Zap, 
-  ExternalLink,
   Printer,
-  BookOpen,
-  Image,
-  Award,
-  BookMarked,
-  Layout,
   Gift,
-  Heart,
   Maximize2,
-  Package,
   FileText,
   Workflow,
-  Sparkle
+  X
 } from "lucide-react";
 import { GENERAL_INFO } from "../data";
 
@@ -33,6 +24,8 @@ interface ServiceItem {
   name: string;
   badge?: string;
   isPopular?: boolean;
+  size?: string;
+  material?: string;
 }
 
 interface ServiceCategory {
@@ -40,310 +33,163 @@ interface ServiceCategory {
   title: string;
   subtitle: string;
   icon: React.ReactNode;
-  colorTheme: string; // Tailwind bg/text color combos
+  colorTheme: string;
   items: ServiceItem[];
+  desc: string;
+  duration: string;
 }
 
-interface OurServicesProps {
-  onSelectProduct?: (serviceName: string) => void;
-}
-
-export default function OurServices({ onSelectProduct }: OurServicesProps) {
+export default function OurServices() {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [activeTab, setActiveTab] = useState<string>("all");
-  const [copiedItem, setCopiedItem] = useState<string | null>(null);
-  const [selectedService, setSelectedService] = useState<{
-    categoryTitle: string;
-    itemName: string;
-    badge?: string;
-    isPopular?: boolean;
-  } | null>(null);
+  const [selectedServiceCategory, setSelectedServiceCategory] = useState<ServiceCategory | null>(null);
 
-  // Grouped exactly according to user specifications with professional tagging
+  // Strictly maps to the User's requested 5 categories and specific items
   const CATEGORIES: ServiceCategory[] = [
     {
-      id: "visiting_cards",
-      title: "Visiting Card Printing",
-      subtitle: "Bespoke executive corporate business card structures",
-      icon: <Award className="w-5 h-5" />,
-      colorTheme: "from-amber-600 to-red-600 text-red-650",
+      id: "printing_services",
+      title: "1. Printing Services",
+      subtitle: "Corporate branding & premium mockups",
+      icon: <Printer className="w-5 h-5 text-red-500" />,
+      colorTheme: "from-red-650 to-red-800",
+      duration: "Same-Day / 24 Hours",
+      desc: "Top-tier custom printed publications on calibrated high-GSM executive paperboard.",
       items: [
-        { name: "Matte / Glossy Cards", isPopular: true },
-        { name: "Spot UV Cards", badge: "Premium" },
-        { name: "Premium Texture Cards" },
-        { name: "QR Code Business Cards" }
+        { name: "Business Cards", isPopular: true, size: "92x54mm", material: "350 GSM Matte/Gloss" },
+        { name: "Flyers", badge: "Rush Hour", size: "A5 Standard", material: "130 GSM Art Paper" },
+        { name: "Books / Hardbinding", size: "A4 / Letter", material: "Regal Leatherbound Skin" },
+        { name: "Posters / Stamps", size: "Custom A3/A2", material: "Adhesive Vinyl Film" },
+        { name: "Banners / Brochures", size: "Bi-Fold / Tri-Fold", material: "170 GSM Premium Glaze" },
+        { name: "Billboards / Signage", size: "Large Format", material: "ACP / Backlit Panels" },
+        { name: "Certificates", badge: "Pro", size: "A4 Deluxe", material: "300 GSM Textured Card" },
+        { name: "Letterheads", size: "A4 Standard", material: "100 GSM Alabaster Bond" }
       ]
     },
     {
-      id: "flex_banners",
-      title: "Flex & Banner Printing",
-      subtitle: "Heavy-duty outdoor and commercial display backdrops",
-      icon: <Maximize2 className="w-5 h-5" />,
-      colorTheme: "from-red-600 to-rose-800 text-red-650",
+      id: "gifting_sublimation",
+      title: "2. Gifting & Sublimation",
+      subtitle: "Custom heat press & desktop tokens",
+      icon: <Gift className="w-5 h-5 text-orange-500" />,
+      colorTheme: "from-orange-500 to-amber-700",
+      duration: "1 - 2 Days",
+      desc: "Vibrant high-contrast thermal sublimation transfers embedded securely on gift memorabilia.",
       items: [
-        { name: "Vinyl Flex Printing" },
-        { name: "Star Flex Printing", isPopular: true },
-        { name: "Outdoor Advertising Banners" },
-        { name: "Event Backdrops" },
-        { name: "lex Banner", badge: "Budget" } // literal user input "lex Banner"
+        { name: "Mug Printing", isPopular: true, size: "11 Oz Standard", material: "Glossy Ceramic Inner Coated" },
+        { name: "T-Shirt Printing", badge: "Popular", size: "A4 Printed chest", material: "100% Cotton / Activewear" },
+        { name: "Cushion Printing", size: "12x12 inches", material: "Velvet Satin Touch Sheet" },
+        { name: "Mouse Pad Printing", size: "Standard Rectangle", material: "Anti-Slip Rubber Backing" },
+        { name: "Personalized Diaries", size: "A5 Bound Planner", material: "Imitation Leather debossed" }
       ]
     },
     {
-      id: "stickers",
-      title: "Sticker Printing",
-      subtitle: "Custom die-cut adhesive marks & product overlays",
-      icon: <Sparkles className="w-5 h-5" />,
-      colorTheme: "from-cyan-600 to-sky-700 text-[#06b6d4]",
+      id: "indoor_outdoor",
+      title: "3. Indoor & Outdoor Work",
+      subtitle: "Large format banners & rigid media installations",
+      icon: <Maximize2 className="w-5 h-5 text-blue-500" />,
+      colorTheme: "from-blue-600 to-indigo-800",
+      duration: "Same-Day Dispatch",
+      desc: "Heavy-duty waterproof billboards, shop signages, and large-format digital flex banner prints.",
       items: [
-        { name: "Product Labels", badge: "Bulk Sale" },
-        { name: "Waterproof Stickers", isPopular: true },
-        { name: "Transparent Stickers" },
-        { name: "Custom Die-Cut Stickers" },
-        { name: "Stickers", badge: "Fast" }
+        { name: "Flex Printing", isPopular: true, size: "Custom sizing", material: "Heavy High-Gloss Flex" },
+        { name: "Vinyl Printing", size: "Plotter sheets", material: "Satin Adhesive Roll" },
+        { name: "Backlit Vinyl Banners", badge: "Best Seller", size: "Glow Frame Fitting", material: "Translucent Light-Diffuser" },
+        { name: "Vinyl Pasting", size: "Shop window glass", material: "Bubble-free pasting film" },
+        { name: "Canvas Prints / Hoardings", size: "Custom Large format", material: "Pristine Artist Canvas" },
+        { name: "Poster Printing", size: "Custom high gauge", material: "Glossy 220 GSM Card" }
       ]
     },
     {
-      id: "brochures",
-      title: "Brochure & Flyer Printing",
-      subtitle: "Double sided glaze promotional layouts",
-      icon: <BookMarked className="w-5 h-5" />,
-      colorTheme: "from-[#dc2626] to-[#cf1b1b] text-red-650",
+      id: "mounting_lamination",
+      title: "4. Sunboard Mounting & Lamination",
+      subtitle: "Sturdy PVC Foam cores & protective glazes",
+      icon: <Layers className="w-5 h-5 text-yellow-500" />,
+      colorTheme: "from-yellow-600 to-orange-600",
+      duration: "24 - 48 Hours",
+      desc: "Heavy duty sunboard mounts paired with protective anti-scratch matte or glossy lamination.",
       items: [
-        { name: "Promotional Flyers" },
-        { name: "Restaurant Menu Cards", isPopular: true },
-        { name: "Company Brochures", badge: "Multi-Fold" },
-        { name: "Pamphlet Printing" }
+        { name: "Sunboard Mounts", isPopular: true, size: "5mm Thickness", material: "PVC Foam Board Panel" },
+        { name: "Roll-Up Standees", badge: "Exhibit Kit", size: "3x6 ft retractable", material: "Non-tearable Synthetic film" },
+        { name: "Custom Stickers / Posters", size: "Plotter cut", material: "Semi-gloss Adhesive Glue" },
+        { name: "Sticky Wallpaper", size: "Custom walls", material: "Textured Wall adhesive" },
+        { name: "One-Way Vision / Frosted", size: "Glass doors", material: "Micro-perforated film" },
+        { name: "GSB / ACP Boards", size: "Main Store Sign", material: "Rust-free Metal Framed" },
+        { name: "Canopy Tents & Calendars", badge: "Hot Promo", size: "4x4 ft Booth layout", material: "Flexible waterproof PVC" }
       ]
     },
     {
-      id: "photo_prints",
-      title: "Photo Printing & Frames",
-      subtitle: "High definition pigmented canvas and bounding modules",
-      icon: <Image className="w-5 h-5" />,
-      colorTheme: "from-pink-600 to-rose-700 text-pink-600",
+      id: "internet_documents",
+      title: "5. Internet & Document Services",
+      subtitle: "High speed photocopy & administrative files",
+      icon: <FileText className="w-5 h-5 text-purple-500" />,
+      colorTheme: "from-purple-600 to-pink-700",
+      duration: "Instant In-Store Counter",
+      desc: "Fast, precise, high-volume laser documents, spiral bindings, and government passport apply assistances.",
       items: [
-        { name: "HD Photo Prints", isPopular: true },
-        { name: "Passport Size Photos", badge: "Same-Day" },
-        { name: "Canvas Photo Frames" },
-        { name: "Photo Albums" }
-      ]
-    },
-    {
-      id: "t_shirts",
-      title: "T-Shirt Printing",
-      subtitle: "High intensity textile vector sublimation",
-      icon: <Layers className="w-5 h-5" />,
-      colorTheme: "from-red-600 to-amber-700 text-red-650",
-      items: [
-        { name: "Custom T-Shirts", isPopular: true },
-        { name: "Corporate T-Shirts", badge: "Bulk Discount" },
-        { name: "Event Printing" },
-        { name: "DTF / Sublimation Printing" }
-      ]
-    },
-    {
-      id: "mugs_gifts",
-      title: "Mug & Gift Printing",
-      subtitle: "Personalized ceramic cups & customized desktop memorabilia",
-      icon: <Gift className="w-5 h-5" />,
-      colorTheme: "from-purple-600 to-indigo-700 text-purple-600",
-      items: [
-        { name: "Photo Mugs" },
-        { name: "Customized Gifts", isPopular: true },
-        { name: "Keychains" },
-        { name: "Mobile Cover Printing", badge: "Trending" }
-      ]
-    },
-    {
-      id: "wedding",
-      title: "Wedding Printing Studio",
-      subtitle: "Premium textured greetings and welcome modules",
-      icon: <Heart className="w-5 h-5" />,
-      colorTheme: "from-rose-600 to-red-800 text-rose-700",
-      items: [
-        { name: "Wedding Cards", isPopular: true },
-        { name: "Invitation Cards", badge: "Royal Texture" },
-        { name: "Welcome Boards" },
-        { name: "Return Gift Tags" }
-      ]
-    },
-    {
-      id: "large_format",
-      title: "Large Format & Signboard",
-      subtitle: "Outdoor backlit glowing frameworks and ACP panels",
-      icon: <Maximize2 className="w-5 h-5" />,
-      colorTheme: "from-amber-600 to-red-700 text-orange-600",
-      items: [
-        { name: "Hoardings" },
-        { name: "Glow Sign Boards", isPopular: true },
-        { name: "ACP Signage", badge: "Heavy Duty" },
-        { name: "Roll-Up Standee" },
-        { name: "Flex Printing" },
-        { name: "Banner Printing" },
-        { name: "Posters" },
-        { name: "Vinyl Printing" }
-      ]
-    },
-    {
-      id: "packaging",
-      title: "Packaging Printing",
-      subtitle: "Product branding bags, envelopes and barcoding labels",
-      icon: <Package className="w-5 h-5" />,
-      colorTheme: "from-emerald-600 to-teal-700 text-emerald-600",
-      items: [
-        { name: "Paper Bags" },
-        { name: "Product Boxes", badge: "Rigid Board" },
-        { name: "Custom Packaging Labels", isPopular: true },
-        { name: "Barcode Labels" }
-      ]
-    },
-    {
-      id: "accounting",
-      title: "Bill Books & ID Cards",
-      subtitle: "NCR carbonless receipts and corporate id credentials",
-      icon: <FileText className="w-5 h-5" />,
-      colorTheme: "from-blue-600 to-sky-700 text-blue-600",
-      items: [
-        { name: "Bill Books", isPopular: true },
-        { name: "ID Cards", badge: "ISO Size" }
-      ]
-    },
-    {
-      id: "doc_services",
-      title: "Document Services",
-      subtitle: "High speed photocopy, binding and hardcovers",
-      icon: <Printer className="w-5 h-5" />,
-      colorTheme: "from-zinc-700 to-zinc-900 text-zinc-800",
-      items: [
-        { name: "Photocopy" },
-        { name: "Color Printing", isPopular: true },
-        { name: "Scanning" },
-        { name: "Lamination", badge: "Water Safe" },
-        { name: "Spiral Binding" }
-      ]
-    },
-    {
-      id: "creative_design",
-      title: "Creative Design Suite",
-      subtitle: "Custom vector creation and bespoke graphics",
-      icon: <Workflow className="w-5 h-5" />,
-      colorTheme: "from-pink-600 to-violet-700 text-violet-600",
-      items: [
-        { name: "Graphic Designing" },
-        { name: "Logo Design", isPopular: true },
-        { name: "Social Media Posters", badge: "24hr Turn" },
-        { name: "Invitation Cards" },
-        { name: "Poster Designs" }
-      ]
-    },
-    {
-      id: "gallery_section",
-      title: "Samples Gallery Highlights",
-      subtitle: "Take a look at actual raw stock sample products in South Delhi",
-      icon: <BookOpen className="w-5 h-5" />,
-      colorTheme: "from-slate-600 to-zinc-800 text-slate-700",
-      items: [
-        { name: "Visiting Card Samples" },
-        { name: "Banner Samples" },
-        { name: "T-Shirt Printing Samples" },
-        { name: "Wedding Card Designs" },
-        { name: "Sticker Samples" },
-        { name: "Printing Machines", badge: "Heavy Plotter" },
-        { name: "Customer Orders" },
-        { name: "Shop Interior" }
-      ]
-    },
-    {
-      id: "seo_ideas",
-      title: "Frequently Searched Ideas",
-      subtitle: "Explore high performance digital plotting requests",
-      icon: <Sparkle className="w-5 h-5" />,
-      colorTheme: "from-amber-600 to-red-600 text-red-600",
-      items: [
-        { name: "Digital Printing Near Me" },
-        { name: "Flex Printing Services" },
-        { name: "Visiting Card Printing" },
-        { name: "Sticker Printing Shop" },
-        { name: "Custom T-Shirt Printing" },
-        { name: "Wedding Card Printing" },
-        { name: "Banner Printing Delhi" },
-        { name: "Digital Print Shop", badge: "Recommended" }
+        { name: "B/W Xerox / Colour Printout", isPopular: true, size: "A4 / Legal / FS", material: "75 GSM Alabaster sheet" },
+        { name: "Scanning & Spiral Binding", size: "Multi-page bundle", material: "Acetate Glass + PVC Coils" },
+        { name: "Passport Photo", badge: "5 Mins", size: "3.5 x 4.5 cm", material: "Ultra HD Glossy paper" },
+        { name: "Lamination / DTP English", size: "A4 / FS Max size", material: "Rigid 125 Microns heat seal" },
+        { name: "CD & DVD Writing", size: "Standard Data Disc", material: "Silver Jewel case write" },
+        { name: "Aadhaar Correction / PAN Apply", badge: "Assisted", size: "Govt Registration", material: "Biometric Form submission" },
+        { name: "Passport Apply Assistance", size: "Online Appointment", material: "Official Interview dispatch" }
       ]
     }
   ];
 
-  const handleCopySpec = (categoryName: string, itemName: string) => {
-    const formattedText = `DIGIMAX PRINTING Service: ${categoryName} -> ${itemName}`;
-    navigator.clipboard.writeText(formattedText);
-    setCopiedItem(itemName);
-    setTimeout(() => {
-      setCopiedItem(null);
-    }, 2000);
-  };
-
-  const handleWhatsAppQuote = (categoryTitle: string, itemName: string) => {
-    const customMessage = encodeURIComponent(
-      `Hello DIGIMAX Printing! I am interested in your services under "${categoryTitle}". Could you please provide quotation rates for: "${itemName}"? Thank you!`
-    );
-    window.open(`https://wa.me/91${GENERAL_INFO.phone}?text=${customMessage}`, "_blank");
-  };
-
-  const handleSelectToPlanner = (categoryTitle: string, itemName: string) => {
-    if (onSelectProduct) {
-      onSelectProduct(`${categoryTitle} - ${itemName}`);
-      
-      // Auto-scroll to AI Planner section
-      const plannerSection = document.getElementById("ai-planner");
-      if (plannerSection) {
-        plannerSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-  };
-
-  // Filters categories & sub-items based on real-time typing query
-  const filteredCategories = CATEGORIES.map(category => {
-    // If the category title matches, include all items
-    const catMatches = category.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                       category.subtitle.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    // Otherwise filter sub-items
-    const matchedItems = category.items.filter(item => 
+  // Search filter
+  const filteredCategories = CATEGORIES.map((cat) => {
+    const matchedItems = cat.items.filter((item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    if (catMatches) {
-      return category;
-    } else if (matchedItems.length > 0) {
-      return { ...category, items: matchedItems };
+    if (
+      cat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cat.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      matchedItems.length > 0
+    ) {
+      return {
+        ...cat,
+        items: matchedItems.length > 0 ? matchedItems : cat.items
+      };
     }
     return null;
   }).filter((x): x is ServiceCategory => x !== null);
 
+  const handleWhatsAppQuote = (categoryTitle: string, itemName: string) => {
+    const textMsg = encodeURIComponent(
+      `Hi DIGIMAX PRINTING! I am looking for a quote on: *${itemName}* within the *${categoryTitle}* column. Please send rate estimation sheets.`
+    );
+    window.open(`https://wa.me/91${GENERAL_INFO.phone}?text=${textMsg}`, "_blank");
+  };
+
+
+
   return (
-    <section id="services" className="py-24 bg-white border-b border-zinc-200/80 relative overflow-hidden">
-      {/* Visual drafting borders to keep true geometric print aesthetic */}
-      <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-zinc-200/80 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-zinc-200/80 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-zinc-200/80 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-zinc-200/80 pointer-events-none" />
+    <section id="services" className="py-24 bg-[#050202] border-b border-zinc-950 relative overflow-hidden text-white">
+      {/* Precision grid visual markings */}
+      <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-zinc-800 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-zinc-800 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-zinc-800 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-zinc-800 pointer-events-none" />
+      
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-red-950/10 via-transparent to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center space-y-4 mb-16">
-          <div className="mx-auto flex items-center space-x-2 px-3.5 py-1 bg-red-50 border border-red-200 rounded-none w-fit">
-            <span className="w-2 h-2 bg-red-600 animate-pulse" />
-            <span className="text-[10px] font-mono tracking-[0.25em] text-red-650 uppercase font-bold">
-              AUTHORIZED OUTLET PORTFOLIO
+          <div className="mx-auto flex items-center space-x-2 px-3.5 py-1 bg-red-950/40 border border-red-500/20 rounded-none w-fit">
+            <span className="w-2 h-2 bg-red-500 animate-pulse" />
+            <span className="text-[10px] font-mono tracking-[0.25em] text-red-500 uppercase font-black">
+              LIVE DIGITAL SERVICES SYSTEM
             </span>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-[#0a0505]">
-            Our <span className="text-red-600">Services Catalog</span>
+          <h2 className="text-3xl sm:text-5xl font-display font-extrabold uppercase tracking-tight text-white leading-none">
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-blue-500">Services Catalog</span>
           </h2>
           
-          <p className="text-xs text-zinc-650 max-w-xl mx-auto leading-relaxed font-light">
-            Browse our complete array of digital, flex, star-lit banner, and customized corporate gift media options. Filter requests in real time to secure custom order blueprints instantly.
+          <p className="text-xs text-zinc-400 max-w-xl mx-auto leading-relaxed font-light">
+            Fully updated index of luxury digital printing, high-impact branding structures, sub-surface heat sublimation, and instant office document access.
           </p>
         </div>
 
@@ -355,148 +201,92 @@ export default function OurServices({ onSelectProduct }: OurServicesProps) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search services (e.g. 'Stickers', 'Wedding Cards', 'Banner')..."
-              className="w-full bg-[#FAF9F6] border border-zinc-250 px-12 py-3.5 text-xs text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-red-600 font-sans tracking-wide transition-all shadow-sm rounded-none"
+              className="w-full bg-zinc-900 border border-zinc-800 px-12 py-3.5 text-xs text-white placeholder-zinc-550 focus:outline-none focus:border-red-600 font-mono tracking-wide transition-all shadow-md rounded-none"
             />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-mono hover:text-red-650 text-zinc-500 font-black"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-mono hover:text-red-500 text-zinc-400 font-black"
               >
                 CLEAR
               </button>
             )}
           </div>
-          <div className="absolute -bottom-6 left-2.5 text-[8.5px] font-mono text-zinc-450 uppercase tracking-widest">
+          <div className="absolute -bottom-6 left-2.5 text-[8.5px] font-mono text-zinc-500 uppercase tracking-widest">
             Showing {filteredCategories.length} divisions matching criteria
           </div>
         </div>
 
-        {/* Categories grid containing BOLD headings and small detailed items */}
+        {/* Categories grid containing BOLD headings and clickable items */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <AnimatePresence mode="popLayout">
             {filteredCategories.map((item, index) => (
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.98, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2, delay: index * 0.03 }}
-                className="bg-white border border-zinc-250 hover:border-red-600/60 p-6 sm:p-8 flex flex-col justify-between transition-all duration-350 relative shadow-sm hover:shadow-md rounded-none group"
+                transition={{ duration: 0.25, delay: index * 0.04 }}
+                onClick={() => setSelectedServiceCategory(item)}
+                className="bg-zinc-900/90 border border-zinc-850 hover:border-red-650 p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 relative shadow-sm hover:shadow-[0_0_25px_rgba(220,38,38,0.1)] rounded-none group cursor-pointer"
+                title="Click anywhere on this card to open specified product popup"
               >
-                
-                {/* Style accents representing printing calibration bounds */}
-                <div className="absolute top-0.5 right-0.5 w-6 h-6 border-t border-r border-dashed border-red-600/10 pointer-events-none" />
-                <span className="absolute top-1 left-2.5 text-[7px] font-mono text-zinc-300 font-bold uppercase pointer-events-none">
-                  SEC // {item.id.toUpperCase()}
+                {/* Calibration borders */}
+                <div className="absolute top-0.5 right-0.5 w-6 h-6 border-t border-r border-dashed border-zinc-800 pointer-events-none group-hover:border-red-500/30" />
+                <span className="absolute top-1 left-2.5 text-[7px] font-mono text-zinc-650 font-bold uppercase pointer-events-none">
+                  DIV // 0{index + 1}
                 </span>
 
                 <div className="space-y-6">
                   {/* Big bold heading with styled custom colored tag */}
                   <div className="space-y-1.5 pt-2">
                     <div className="flex items-center space-x-2.5">
-                      <div className="w-9 h-9 flex items-center justify-center bg-red-50 text-red-600 border border-red-100 rounded-none group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-colors duration-300">
+                      <div className="w-9 h-9 flex items-center justify-center bg-zinc-950 text-red-500 border border-zinc-800 rounded-none group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-colors duration-300 shadow-inner">
                         {item.icon}
                       </div>
-                      <h3 className="text-base sm:text-lg font-display font-black uppercase tracking-wide text-zinc-950 group-hover:text-red-600 transition-colors">
+                      <h3 className="text-sm sm:text-base font-display font-black uppercase tracking-wide text-white group-hover:text-red-500 transition-colors duration-200">
                         {item.title}
                       </h3>
                     </div>
                     
-                    <p className="text-[10px] text-zinc-500 leading-normal font-mono uppercase tracking-wide min-h-[30px]">
+                    <p className="text-[10px] text-zinc-400 leading-normal font-mono uppercase tracking-wide min-h-[30px] font-semibold">
                       {item.subtitle}
                     </p>
                   </div>
 
-                  {/* List of services in smaller sizes to respect physical outline */}
-                  <div className="space-y-2 border-t border-zinc-100 pt-4">
-                    {item.items.map((sub, sIdx) => (
+                  {/* List of services */}
+                  <div className="space-y-2 border-t border-zinc-800 pt-4">
+                    {item.items.slice(0, 4).map((sub, sIdx) => (
                       <div 
                         key={sIdx}
-                        onClick={() => setSelectedService({ categoryTitle: item.title, itemName: sub.name, badge: sub.badge, isPopular: sub.isPopular })}
-                        className="flex items-center justify-between py-2 px-2.5 bg-[#FAF9F6] border border-zinc-200/50 hover:border-red-650 hover:bg-red-50/20 transition-all rounded-none cursor-pointer group/item"
-                        title={`Click to view instant rates and full specification for ${sub.name}`}
+                        className="flex items-center justify-between py-1.5 px-2 bg-zinc-950 border border-zinc-850 transition-all rounded-none"
                       >
-                        <div className="flex items-center space-x-2">
-                          <Check className="w-3.5 h-3.5 text-red-650 flex-shrink-0 group-hover/item:scale-110 transition-transform" />
-                          <span className="text-[11.5px] font-sans font-semibold text-zinc-800 tracking-wide group-hover/item:text-red-700 transition-colors">
+                        <div className="flex items-center space-x-1.5">
+                          <Check className="w-3 h-3 text-red-500 flex-shrink-0" />
+                          <span className="text-[11px] font-sans font-medium text-zinc-300 tracking-wide">
                             {sub.name}
                           </span>
-                          {sub.isPopular && (
-                            <span className="px-1.5 py-0.5 bg-red-50 text-[7.5px] font-mono text-red-600 font-bold border border-red-200 uppercase rounded-none tracking-wider scale-95 origin-left">
-                              POPULAR
-                            </span>
-                          )}
-                          {sub.badge && (
-                            <span className="px-1.5 py-0.5 bg-zinc-900 text-[7px] font-mono text-white font-bold uppercase rounded-none tracking-wider scale-95 origin-left">
-                              {sub.badge}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Dropdown Quick tools */}
-                        <div className="flex items-center space-x-1.5 opacity-80 hover:opacity-100">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleCopySpec(item.title, sub.name);
-                            }}
-                            title="Copy specifications to system"
-                            className="p-1 hover:bg-zinc-200 bg-white border border-zinc-200 text-zinc-600 transition-colors rounded-none cursor-pointer text-[8px] font-mono uppercase"
-                          >
-                            {copiedItem === sub.name ? "Copied" : "Copy"}
-                          </button>
-                          
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleSelectToPlanner(item.title, sub.name);
-                            }}
-                            title="Feed directly into AI Media Planner"
-                            className="p-1.5 bg-white border border-zinc-200 text-red-650 hover:border-red-600 transition-all rounded-none cursor-pointer flex items-center justify-center"
-                          >
-                            <Zap className="w-2.5 h-2.5 text-red-600 focus:animate-spin" />
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleWhatsAppQuote(item.title, sub.name);
-                            }}
-                            title="Chat rates for this item direct"
-                            className="p-1.5 bg-white border border-zinc-200 text-green-600 hover:border-green-650 hover:bg-green-50 transition-all rounded-none cursor-pointer flex items-center justify-center"
-                          >
-                            <MessageSquare className="w-2.5 h-2.5" />
-                          </button>
                         </div>
                       </div>
                     ))}
+                    {item.items.length > 4 && (
+                      <div className="text-[9.5px] font-mono text-medium text-red-500 mt-2 text-right group-hover:underline">
+                        + {item.items.length - 4} more services included. Click to expand.
+                      </div>
+                    )}
                   </div>
-
                 </div>
 
-                {/* Bottom structural controls */}
-                <div className="pt-6 mt-6 border-t border-zinc-120 border-zinc-100 flex items-center justify-between text-[10px] font-mono font-bold tracking-widest text-[#050505]">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      // Grab first item as default for quick quotes
-                      const firstItem = item.items[0]?.name || item.title;
-                      handleWhatsAppQuote(item.title, firstItem);
-                    }}
-                    className="flex items-center space-x-1 text-red-600 hover:text-red-800 transition-all cursor-pointer group-hover:underline"
-                  >
-                    <span>GET INSTANT RATES</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </button>
-                  <span className="text-[8px] text-zinc-400">
-                    DIGIMAX PLOT
+                {/* Card Action visual handle */}
+                <div className="mt-6 pt-4 border-t border-zinc-850 flex items-center justify-between text-[10px] font-mono text-zinc-450 uppercase group-hover:text-white transition-colors">
+                  <span className="flex items-center gap-1">
+                    <Workflow className="w-3.5 h-3.5 text-zinc-500 group-hover:text-red-500 group-hover:animate-spin" />
+                    Open Spec Column
                   </span>
+                  <span className="text-zinc-650 group-hover:text-red-500">→</span>
                 </div>
 
               </motion.div>
@@ -504,199 +294,136 @@ export default function OurServices({ onSelectProduct }: OurServicesProps) {
           </AnimatePresence>
         </div>
 
-        {/* Bottom Promotional Outliner */}
-        <div className="mt-16 bg-[#FAF9F6] border border-dashed border-zinc-300 p-8 sm:p-12 text-center relative rounded-none max-w-3xl mx-auto shadow-sm">
-          <div className="absolute top-1 left-2 text-[6px] font-mono text-zinc-350 tracking-widest uppercase">
-            ESTIMATE // CALCULATION ENGINE
-          </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="text-left space-y-1.5 max-w-md">
-              <h4 className="text-sm font-display font-black uppercase text-zinc-950 tracking-wider">
-                💡 Need customized rates or custom specifications?
-              </h4>
-              <p className="text-[11.5px] font-sans text-zinc-600 font-light leading-relaxed">
-                Feed any specific product selection right into our AI Plotting Spec Assembler below to outline raw sizing, bleed lines, material weight constraints, and estimated delivery frames!
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                const plannerSection = document.getElementById("ai-planner");
-                if (plannerSection) {
-                  plannerSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-              }}
-              className="py-3 px-6 bg-zinc-950 text-white hover:bg-red-600 transition-all font-mono font-bold text-[10px] uppercase tracking-widest flex items-center space-x-2 rounded-none cursor-pointer flex-shrink-0"
-            >
-              <span>GO TO SPEC ASSEMBLY</span>
-              <Zap className="w-3.5 h-3.5 fill-white text-[#FAF9F6]" />
-            </button>
-          </div>
-        </div>
-
       </div>
 
-      {/* Animated Custom Service Specifications Popup Modal */}
+      {/* POPUP MODAL SHOWING ALL SERVICES IN CLICKED CATEGORY */}
       <AnimatePresence>
-        {selectedService && (
+        {selectedServiceCategory && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Dark backdrop */}
+            {/* Dark backdrop overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSelectedService(null)}
-              className="absolute inset-0 bg-zinc-950/75 backdrop-blur-sm"
+              onClick={() => setSelectedServiceCategory(null)}
+              className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm z-40"
             />
 
-            {/* Modal Card Content */}
+            {/* Modal Box */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               transition={{ type: "spring", duration: 0.35 }}
-              className="bg-white border-2 border-red-650 w-full max-w-lg shadow-[0_10px_50px_rgba(185,28,28,0.2)] rounded-none z-10 overflow-hidden relative"
+              className="bg-zinc-900 border-2 border-red-600 w-full max-w-2xl shadow-[0_15px_50px_rgba(220,38,38,0.25)] rounded-none z-50 overflow-hidden relative max-h-[85vh] flex flex-col font-sans text-white"
             >
-              {/* Calibration crosshairs aesthetics */}
-              <div className="absolute top-1.5 right-2 text-[7px] font-mono text-zinc-400 select-none font-bold">
-                [CMYK CAL_SPEC ENGINE]
+              {/* Engineering layout labels */}
+              <div className="absolute top-1.5 right-3 text-[7px] font-mono text-zinc-550 select-none font-bold text-zinc-500">
+                [DM_SERVICE_CAT_MATRIX_v4]
               </div>
-              
-              {/* Visual Header */}
-              <div className="bg-gradient-to-r from-red-650 to-red-800 text-white p-6 sm:p-8 space-y-1.5">
-                <span className="text-[9px] font-mono font-black tracking-widest text-[#ffffff] uppercase bg-red-900/40 px-2 py-0.5 border border-red-500/30 inline-block">
-                  {selectedService.categoryTitle} System Proof
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-display font-black tracking-tight uppercase leading-tight text-white">
-                  {selectedService.itemName}
-                </h3>
+
+              {/* Graphic design Header */}
+              <div className="bg-gradient-to-r from-red-600 to-red-800 text-white p-6 space-y-1.5 sticky top-0 z-10 border-b border-red-500/20">
+                <button
+                  type="button"
+                  onClick={() => setSelectedServiceCategory(null)}
+                  className="absolute top-4 right-4 text-white/80 hover:text-white hover:scale-110 transition-all cursor-pointer p-1 bg-zinc-950/20 border border-white/10"
+                >
+                  <X className="w-5 h-5" />
+                </button>
                 <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-[10px] font-mono tracking-wider text-green-300 font-bold uppercase">
-                    CALIBRATED & SECURE
+                  {selectedServiceCategory.icon}
+                  <span className="text-[10px] font-mono tracking-widest text-[#ffffff] uppercase font-black bg-red-950/50 px-2 py-0.5 border border-red-500/20">
+                    Category specs sheet
                   </span>
                 </div>
+                <h3 className="text-xl sm:text-2xl font-display font-black tracking-tight uppercase leading-tight text-white mt-2">
+                  {selectedServiceCategory.title}
+                </h3>
+                <p className="text-xs text-red-100 font-mono">
+                  {selectedServiceCategory.subtitle}
+                </p>
               </div>
 
-              {/* Main Block of Specifications (below title) */}
-              <div className="p-6 sm:p-8 space-y-5">
-                <div className="space-y-3">
-                  <h4 className="text-[11px] font-mono font-black text-red-650 uppercase tracking-widest border-b border-zinc-150 pb-1 flex items-center justify-between">
-                    <span>📐 Print Specification Block</span>
-                    <span className="text-zinc-450 font-light text-[9px] font-sans">South Delhi Hub Rates</span>
+              {/* Modal scroll area */}
+              <div className="p-6 sm:p-8 space-y-6 overflow-y-auto flex-1">
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-mono font-black text-red-500 uppercase tracking-widest border-b border-zinc-800 pb-1 flex items-center justify-between">
+                    <span>📐 CLASSIFIED SUB-SERVICES MATRIX</span>
+                    <span className="text-zinc-500 text-[9px] font-mono">Malviya Nagar South Delhi Workshop</span>
                   </h4>
-
-                  {/* Specifications key-value matrix */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-[#FAF9F6] border border-zinc-200 p-2.5">
-                      <span className="text-[8px] font-mono uppercase text-zinc-450 font-black block">Standard Sizing</span>
-                      <p className="text-xs font-sans font-extrabold text-zinc-800 mt-0.5">
-                        {selectedService.itemName.toLowerCase().includes("visiting") || selectedService.categoryTitle.toLowerCase().includes("visiting")
-                          ? "3.5\" x 2.0\" (88mm x 53mm)"
-                          : selectedService.itemName.toLowerCase().includes("banner") || selectedService.categoryTitle.toLowerCase().includes("flex")
-                          ? "6ft x 3ft standard / customizable"
-                          : selectedService.itemName.toLowerCase().includes("sticker") || selectedService.categoryTitle.toLowerCase().includes("sticker")
-                          ? "2\" x 2\" or Plotter sheets"
-                          : selectedService.itemName.toLowerCase().includes("photo") || selectedService.categoryTitle.toLowerCase().includes("photo")
-                          ? "HD Gloss A4 / album standard"
-                          : "Custom vector sizes"}
-                      </p>
-                    </div>
-
-                    <div className="bg-[#FAF9F6] border border-zinc-200 p-2.5">
-                      <span className="text-[8px] font-mono uppercase text-zinc-450 font-black block">Raw Media Weight</span>
-                      <p className="text-xs font-sans font-extrabold text-zinc-800 mt-0.5 col-span-1">
-                        {selectedService.itemName.toLowerCase().includes("matte")
-                          ? "350 GSM Hard Art Cardboard"
-                          : selectedService.itemName.toLowerCase().includes("spot")
-                          ? "Premium Gloss Raised Spot Finish"
-                          : selectedService.itemName.toLowerCase().includes("vinyl")
-                          ? "Waterproof Glossy Vinyl base"
-                          : selectedService.itemName.toLowerCase().includes("cotton") || selectedService.categoryTitle.toLowerCase().includes("t-shirt")
-                          ? "225 GSM Ultra-Soft Cotton"
-                          : "Heavy GSM Industrial Plot stock"}
-                      </p>
-                    </div>
-
-                    <div className="bg-[#FAF9F6] border border-zinc-200 p-2.5">
-                      <span className="text-[8px] font-mono uppercase text-zinc-450 font-black block">Wholesale Pricing Est</span>
-                      <p className="text-xs font-sans font-black text-red-650 mt-0.5">
-                        {selectedService.itemName.toLowerCase().includes("visiting") || selectedService.categoryTitle.toLowerCase().includes("visiting")
-                          ? "₹0.60 per card (Bulk limits)"
-                          : selectedService.itemName.toLowerCase().includes("vinyl") || selectedService.categoryTitle.toLowerCase().includes("flex")
-                          ? "₹12 / sq.ft (Lowest Hub rate)"
-                          : "Direct wholesale quote"}
-                      </p>
-                    </div>
-
-                    <div className="bg-[#FAF9F6] border border-zinc-200 p-2.5">
-                      <span className="text-[8px] font-mono uppercase text-zinc-450 font-black block">Fastest Turnaround</span>
-                      <p className="text-xs font-sans font-extrabold text-zinc-800 mt-0.5">
-                        {selectedService.itemName.toLowerCase().includes("banner") || selectedService.categoryTitle.toLowerCase().includes("flex")
-                          ? "Urgent 2 Hour Plotting"
-                          : "Same-Day Delivery Delhi-NCR"}
-                      </p>
-                    </div>
-                  </div>
+                  <p className="text-xs text-zinc-400">
+                    {selectedServiceCategory.desc}
+                  </p>
                 </div>
 
-                {/* Simulated proof rendering frame */}
-                <div className="bg-zinc-50 border border-dashed border-red-200 p-4 relative overflow-hidden flex flex-col justify-between">
-                  <span className="absolute top-1 right-2 text-[7px] font-mono text-red-600/35 uppercase font-bold">
-                    [Proof Alignment Box]
-                  </span>
-                  <div className="py-2 flex flex-col items-center justify-center space-y-1.5">
-                    <div className="w-10 h-10 rounded-full border-4 border-red-500/20 flex items-center justify-center border-t-red-650 animate-spin">
-                      <div className="w-4 h-4 rounded-full bg-red-650/15" />
-                    </div>
-                    <p className="text-[10px] font-mono uppercase tracking-widest text-zinc-700 font-extrabold animate-pulse">
-                      Specs Set: {selectedService.itemName}
-                    </p>
-                    <p className="text-[9.5px] font-sans text-zinc-500 max-w-xs text-center leading-normal font-light">
-                      Bleeds mapped at 3mm width safety offsets. Handled on high-precision Plotters.
-                    </p>
-                  </div>
-                </div>
+                {/* Sub-services tables */}
+                <div className="space-y-2.5">
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {selectedServiceCategory.items.map((sub, sIdx) => (
+                      <div 
+                        key={sIdx}
+                        className="bg-zinc-950 border border-zinc-850 p-3 sm:p-4 rounded-none flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-red-500/45 transition-colors group/row"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center space-x-2">
+                            <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />
+                            <span className="text-xs font-bold text-white uppercase group-hover/row:text-red-400 transition-colors">
+                              {sub.name}
+                            </span>
+                            {sub.isPopular && (
+                              <span className="px-1.5 py-0.5 bg-red-950 text-red-400 text-[7.5px] font-mono font-black rounded-none border border-red-900 uppercase">
+                                POPULAR
+                              </span>
+                            )}
+                            {sub.badge && (
+                              <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[7px] font-mono text-zinc-405 text-zinc-400 font-bold uppercase rounded-none">
+                                {sub.badge}
+                              </span>
+                            )}
+                          </div>
+                          
+                          <div className="flex flex-wrap gap-2 text-[9px] font-mono text-zinc-500">
+                            {sub.size && <span>Standard Dim: <strong className="text-zinc-400">{sub.size}</strong></span>}
+                            {sub.material && <span>Substrate: <strong className="text-zinc-405 text-zinc-400">{sub.material}</strong></span>}
+                          </div>
+                        </div>
 
-                {/* Active buttons */}
-                <div className="space-y-2 pt-1 border-t border-zinc-150">
-                  <button
-                    onClick={() => {
-                      handleWhatsAppQuote(selectedService.categoryTitle, selectedService.itemName);
-                    }}
-                    className="w-full py-2.5 bg-gradient-to-r from-red-650 to-red-800 text-white font-mono font-bold text-[10px] uppercase tracking-widest flex items-center justify-center space-x-2.5 hover:brightness-105 transition-all cursor-pointer rounded-none"
-                  >
-                    <MessageSquare className="w-4 h-4 fill-white text-red-700" />
-                    <span>Order Customized Print on WhatsApp</span>
-                  </button>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() => {
-                        handleSelectToPlanner(selectedService.categoryTitle, selectedService.itemName);
-                        setSelectedService(null);
-                      }}
-                      className="py-2 border border-red-650 hover:bg-red-50 text-red-650 font-mono font-bold text-[9px] uppercase tracking-wider flex items-center justify-center space-x-1 transition-all cursor-pointer rounded-none bg-white"
-                    >
-                      <Zap className="w-3.5 h-3.5" />
-                      <span>Assemble with AI</span>
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setSelectedService(null);
-                      }}
-                      className="py-2 bg-zinc-950 text-[#ffffff] hover:bg-zinc-800 transition-all font-mono font-bold text-[9px] uppercase tracking-widest cursor-pointer rounded-none"
-                    >
-                      ✕ Close Spec Sheet
-                    </button>
+                        {/* Order & Ask Specs buttons */}
+                        <div className="flex items-center gap-2 self-start sm:self-auto">
+                          <button
+                            onClick={() => handleWhatsAppQuote(selectedServiceCategory.title, sub.name)}
+                            className="px-3 py-1.5 bg-red-950 hover:bg-red-900 border border-red-900/40 text-red-400 hover:text-white rounded-none font-mono text-[9px] font-black uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1"
+                          >
+                            <MessageSquare className="w-3 h-3 fill-current " />
+                            Get Quote
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
+
+              {/* Modal footer actions */}
+              <div className="p-4 bg-zinc-950 border-t border-zinc-850 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+                <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-red-500" />
+                  <span>DUE DURATION: {selectedServiceCategory.duration}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedServiceCategory(null)}
+                  className="px-5 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  ✕ Close Services Panel
+                </button>
+              </div>
+
             </motion.div>
           </div>
         )}
       </AnimatePresence>
-
     </section>
   );
 }

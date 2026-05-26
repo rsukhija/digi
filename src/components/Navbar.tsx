@@ -23,7 +23,6 @@ export default function Navbar() {
     { name: "Home", href: "#home" },
     { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
-    { name: "AI Draft", href: "#ai-planner" },
     { name: "Gallery", href: "#gallery" },
     { name: "Contact", href: "#contact" }
   ];
