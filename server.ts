@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 
@@ -137,11 +136,12 @@ Based on this, suggest full customized print layout specifications, standard siz
 // App server setup with Vite middleware supporting direct entry ports
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
+    const vite = await import("vite");
+    const viteServer = await vite.createServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
-    app.use(vite.middlewares);
+    app.use(viteServer.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
